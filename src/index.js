@@ -10,71 +10,73 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.post('/users', (req, res)=>{
+app.post('/users', async (req, res)=>{
     const newUser = new Users(req.body);
     
-    newUser.save().then((result)=>{
+    try{
+        await newUser.save()
         res.status(201).send(newUser)
-    }).catch((error)=>{
+    }
+    catch(error){
         res.status(400).send(error.message)
-    })
-
+    }
 })
 
-
-app.post('/tasks', (req, res)=>{
+app.post('/tasks', async (req, res)=>{
     const newTask = new Tasks(req.body)
-
-    newTask.save().then((result)=>{
+    try{
+        await newTask.save()
         res.status(201).send(newTask)
-    }).catch((error)=>{
+    }catch(error){
         res.status(400).send(error.message)
-    })
+    }
 })
 
-app.get('/users', (req, res)=>{
-    Users.find({}).then((users)=>{
+app.get('/users',async (req, res)=>{
+    try{
+        const users = await Users.find({})
         res.send(users)
-    }).catch((error)=>{
+    }
+    catch(error){
         res.status(500).send(error)
-    })
+    }
 })
 
-app.get('/users/:id', (req, res)=>{
+app.get('/users/:id',async (req, res)=>{
     const _id = req.params.id
-
-    Users.findById(_id).then((user)=>{
-        if (!user)
-        {
+    try{
+        const user = await Users.findById(_id)
+        if (!user){
             return res.status(404).send()
         }
         res.send(user)
-    }).catch((error)=>{
+    }catch(error){
         res.status(500).send(error.message)
-    })
+    }
 })
 
 
-app.get('/tasks', (req, res)=>{
-    Tasks.find({}).then((tasks)=>{
+app.get('/tasks', async (req, res)=>{
+    try{
+        const tasks = await Tasks.find({})
         res.send(tasks)
-    }).catch((error)=>{
+    }catch(error){
         res.status(500).send(error)
-    })
+    }
 })
 
-app.get('/tasks/:id', (req, res)=>{
+app.get('/tasks/:id',async (req, res)=>{
     const _id = req.params.id
 
-    Tasks.findById(_id).then((tasks)=>{
-        if (!tasks)
-        {
+    try{
+        const tasks = await Tasks.findById(_id)
+        if (!tasks) {
             return res.status(404).send()
         }
         res.send(tasks)
-    }).catch((error)=>{
+    }catch(error){
         res.status(500).send(error.message)
-    })
+    }
 })
 
 
