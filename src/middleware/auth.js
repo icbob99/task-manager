@@ -11,8 +11,9 @@ const auth = async (req, res, next)=>{
             throw new Error()
         }
 
-        //store already fetched user on request for use in a next function(s) it means to reduce amount db calls
+        //store already fetched user on request for use in a next function(s) it means to reduce amount db calls        
         req.user = user
+        req.token = token
         next()
     }catch(e){
         res.status(401).send({"error":"Please authenticate."})
