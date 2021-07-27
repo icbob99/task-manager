@@ -60,21 +60,21 @@ router.get('/users/me', auth,async (req, res)=>{
     res.send(req.user)
 })
 
-router.get('/users/:id',async (req, res)=>{
-    const _id = req.params.id
-    try{
-        const user = await Users.findById(_id)
-        if (!user){
-            return res.status(404).send()
-        }
-        res.send(user)
-    }catch(error){
-        res.status(500).send(error.message)
-    }
-})
+// router.get('/users/:id',async (req, res)=>{
+//     const _id = req.params.id
+//     try{
+//         const user = await Users.findById(_id)
+//         if (!user){
+//             return res.status(404).send()
+//         }
+//         res.send(user)
+//     }catch(error){
+//         res.status(500).send(error.message)
+//     }
+// })
 
-router.patch('/users/:id',async (req, res)=>{
-    const _id = req.params.id
+router.patch('/users/me', auth, async (req, res)=>{
+    // const _id = req.user._id
     const newValues = req.body
 
     const updates = Object.keys(newValues)
@@ -87,7 +87,8 @@ router.patch('/users/:id',async (req, res)=>{
     }
 
     try{
-        const user = await Users.findById(_id)
+        //const user = await Users.findById(_id)
+        const user = req.user
 
         updates.forEach((update)=>user[update]=req.body[update])
 
@@ -97,22 +98,17 @@ router.patch('/users/:id',async (req, res)=>{
         if (!user){
             return res.status(404).send()
         }
-        console.log(user)
+        
         res.send(user)
     }catch(error){
         res.status(400).send(error.message)
     }
 })
 
-router.delete('/users/:id', async (req, res)=>{
+router.delete('/users/me', auth, async (req, res)=>{
     try{
-        const user = await Users.findByIdAndDelete(req.params.id)
-
-        if (!user){
-            return res.status(404).send()
-        }        
-
-        res.send(user)
+                await req.user.remove()
+        res.send(req.user)
     }catch(e){
         return res.status(500).send(e.message)
     }
