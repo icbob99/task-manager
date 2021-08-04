@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Tasks = mongoose.model('Tasks',{
+const taskSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true, 
@@ -16,6 +16,10 @@ const Tasks = mongoose.model('Tasks',{
         ref: 'User'
 
     }
+},{ 
+    timestamps: true 
 })
+
+const Tasks = mongoose.model('Tasks', taskSchema)
 
 module.exports = Tasks
