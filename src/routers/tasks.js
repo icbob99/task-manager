@@ -23,6 +23,9 @@ router.post('/tasks', auth, async (req, res)=>{
     }
 })
 
+// GET /tasks?completed=true
+// Get /task/limit=10&skip=0   first 10 reuslts
+// GET /task/limit=10&skip=10 get 10 after 10 pages (skip 1st 10 pages)
 router.get('/tasks', auth, async (req, res)=>{
     try{
         // const tasks = await Tasks.find({owner: req.user._id})
@@ -34,7 +37,11 @@ router.get('/tasks', auth, async (req, res)=>{
         }
           await req.user.populate({
               path : 'tasks',
-              match
+              match,
+              options: {
+                  limit: parseInt(req.query.limit),
+                  skip: parseInt(req.query.skip)
+              }
             }).execPopulate()
           res.send(req.user.tasks)
     }catch(error){
