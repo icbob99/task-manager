@@ -30,8 +30,17 @@ const upload = mullter({
     }
 })
 
+// app.post('/upload', upload.single('upload'), (req, res)=>{
+//     res.send()
+// })
+
+// const errorMidleware = (req, res, next)=>{
+//     throw new Error('From midle ware')
+// }
 app.post('/upload', upload.single('upload'), (req, res)=>{
-res.send()
+    res.send()
+}, (error, req, res, next)=>{
+    res.status(400).send({"error":error.message})
 })
 
 
