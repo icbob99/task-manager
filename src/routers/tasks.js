@@ -26,26 +26,33 @@ router.post('/tasks', auth, async (req, res)=>{
 // GET /tasks?completed=true
 // Get /task/limit=10&skip=0   first 10 reuslts
 // GET /task/limit=10&skip=10 get 10 after 10 pages (skip 1st 10 pages)
+// GET /task/sortBy=createdAt_asc or _desc
 router.get('/tasks', auth, async (req, res)=>{
     try{
         // const tasks = await Tasks.find({owner: req.user._id})
         // res.send(tasks)
           // or 
           const match  = {}
+          const sort={}
         if(req.query.completed){
             match.completed = req.query.completed === 'true'
+        }
+        
+        if(req.query.sortBy){
+            const parts = req.query.sortBy.split('_')
+            sort[parts[0]] = parts[1]==='desc'?-1:1
         }
           await req.user.populate({
               path : 'tasks',
               match,
               options: {
                   limit: parseInt(req.query.limit),
-                  skip: parseInt(req.query.skip)
+                  skip: parseInt(req.query.skip),
+                  sort
               }
             }).execPopulate()
           res.send(req.user.tasks)
     }catch(error){
-        console.log(`I'm here ${error}`)
         res.status(500).send(error)
     }
 })
