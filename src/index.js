@@ -15,7 +15,19 @@ const tasksRouter = require('./routers/tasks')
 //use nulter exampe
 const mullter = require('multer')
 const upload = mullter({
-    dest: 'images'
+    dest: 'images',
+    limits: {
+        fieldSize: 1000000
+    },
+    fileFilter(req, file, cb){
+        //if(!file.originalname.endsWith('.pdf')){
+        if(!file.originalname.match(/\.(doc|docx)$/)){
+            return cb(new Error('Please upload a PDF'))
+        }
+        // cb(new Error('Please upload an image'))
+         cb(undefined, true)
+        // cb(undefined, false)
+    }
 })
 
 app.post('/upload', upload.single('upload'), (req, res)=>{
