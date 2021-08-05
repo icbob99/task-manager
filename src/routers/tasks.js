@@ -28,9 +28,17 @@ router.get('/tasks', auth, async (req, res)=>{
         // const tasks = await Tasks.find({owner: req.user._id})
         // res.send(tasks)
           // or 
-          await req.user.populdate('tasks').execPopulate()
+          const match  = {}
+        if(req.query.completed){
+            match.completed = req.query.completed === 'true'
+        }
+          await req.user.populate({
+              path : 'tasks',
+              match
+            }).execPopulate()
           res.send(req.user.tasks)
     }catch(error){
+        console.log(`I'm here ${error}`)
         res.status(500).send(error)
     }
 })
