@@ -25,11 +25,11 @@ router.post('/tasks', auth, async (req, res)=>{
 
 router.get('/tasks', auth, async (req, res)=>{
     try{
-        const tasks = await Tasks.find({owner: req.user._id})
-        res.send(tasks)
+        // const tasks = await Tasks.find({owner: req.user._id})
+        // res.send(tasks)
           // or 
-        //   await req.user.populdate('tasks').execPopulate()
-        //   res.send(req.user.tasks)
+          await req.user.populdate('tasks').execPopulate()
+          res.send(req.user.tasks)
     }catch(error){
         res.status(500).send(error)
     }
