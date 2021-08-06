@@ -2,6 +2,7 @@ const express = require('express')
 const Users = require('../models/users')
 const auth = require('../middleware/auth')
 const multer = require('multer')
+const User = require('../models/users')
 
 
 
@@ -145,4 +146,20 @@ router.delete('/users/me/avatar', auth, async (reg, res)=>{
     await reg.user.save()
     res.send()
 })
+
+router.get('/users/:id/avatar', async (req, res)=>{
+    try{        
+        const user =  await User.findById(req.params.id)
+        
+        if (!user || !user.avatar){        
+            throw new Error()
+        }
+
+        res.set('Content-Type','image/jpeg')
+        res.send(user.avatar)
+    }catch(e){
+        res.status(404).send(e.message)
+    }
+})
+
 module.exports = router
