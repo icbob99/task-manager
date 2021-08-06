@@ -32,7 +32,8 @@ const userSchema = new mongoose.Schema({
             if (v<0)
                 throw new Error('Age must be positive value')
         }
-    }, password:{
+    },
+    password:{
         type: String,
         required: true,
         trim: true,
@@ -42,6 +43,9 @@ const userSchema = new mongoose.Schema({
             },
             message: props=>`${props.value} should have size more than 6`
         }
+    },
+    avatar:{
+        type: Buffer
     }, 
     tokens:[{
         token:{
@@ -49,8 +53,9 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
-},{ 
-    timestamps: true
+},
+    {
+        timestamps: true
 })
 
 //set virtual properties
