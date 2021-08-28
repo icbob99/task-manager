@@ -26,9 +26,14 @@ test('Should convert 0 C to 32 F', ()=>{
     expect(actual).toBe(32)
 })
 
-test('Async Should add 2 nu mbers', (done)=>{
+test(' Should add 2 numbers with Prommis', (done)=>{
     add(2,3).then((sum)=>{
         expect (sum).toBe(5)
         done()
     })
+})
+
+test('Should add 2 numbers async/await', async ()=>{
+    const sum = await add(10, 22)
+    expect(sum).toBe(32)
 })
