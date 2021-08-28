@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "env-cmd -f ./config/dev.env jest --watch",
     "dev": "env-cmd -f config/dev.env --no-override nodemon src/index.js",
     "start": "node src/index.js"
+  },
+  "jast":{
+    "testEnvironment ":"node"
   },
   "keywords": [],
   "author": "",
