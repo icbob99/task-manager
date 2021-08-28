@@ -8,8 +8,8 @@
     "dev": "env-cmd -f config/dev.env --no-override nodemon src/index.js",
     "start": "node src/index.js"
   },
-  "jast":{
-    "testEnvironment ":"node"
+  "jast": {
+    "testEnvironment ": "node"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "env-cmd": "^10.1.0",
     "jest": "^27.0.6",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6"
   }
 }
