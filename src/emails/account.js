@@ -26,17 +26,17 @@ sgMail.setApiKey(sendgridAPIKey)
 // })
 
 
-const sendWelcomeEmail = (email, name) => {
-  sgMail.send({
+const sendWelcomeEmail = async (email, name) => {
+  const response = await sgMail.send({
       to: email,
       from:'icbob99@gmail.com',
       subject:'Thanks for joining',
       text : `Welcome to this app, ${name}. Let me know how you go alone with this app`
-  }).then(() => {
+  })//.then(() => {
     console.log('Status: SUCCESS')
-  }).catch((e) => {
-    console.log('Status: ERROR', e)
-  })
+  // }).catch((e) => {
+  //   console.log('Status: ERROR', e)
+  // })
 }
 
 const sendCancelEmail = (email, name) =>{
