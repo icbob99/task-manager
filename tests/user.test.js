@@ -1,34 +1,12 @@
-const { TestWatcher } = require('jest')
 const request = require('supertest')
 
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
 const app = require('./../src/app')
 const User = require('../src/models/users')
-const { use } = require('./../src/app')
-
-const userBoris = {
-    name: 'Boris',
-    email: 'Boris@someadr.com',
-    password: 'MyPass777!'
-}
-
-const userOneId = new mongoose.Types.ObjectId()
-const userMike = {
-    _id: userOneId,
-    name: 'Mike',
-    email: 'Mike@someadr.com',
-    password: '1960!Maik',
-    tokens: [{
-        token: jwt.sign({_id: userOneId}, process.env.SECRETCODE)
-    }]
-}
+const { userOneId,     userMike,     userBoris,     setupDataBase} = require('./fixtures/db')
 
 
-beforeEach(async () => {
-    await User.deleteMany();
-    await new User(userMike).save();
-})
+
+beforeEach(setupDataBase)
 
 test('Should signup a new user', async () => {
     const response = await request(app)
@@ -120,9 +98,6 @@ test('Should upload avatar image', async () => {
         .expect(200)
     
     const user = await User.findById(userOneId)
-    // expect({}).toBe({})
-    // expect({}).toEqual({})
-    // console.log(user.avatar)
     expect(user.avatar).toEqual(expect.any(Buffer))
 })
 
@@ -136,9 +111,6 @@ test('Should update valid user fields', async () => {
         .expect(200)
     
     const user = await User.findById(userOneId)
-    console.log('user ***  ', user)
-    console.log('user name ***  ', user.name)
-
     expect(user.name).toEqual('Mika')
 })
 
